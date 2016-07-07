@@ -40,3 +40,19 @@ header .mdl-radio__inner-circle {
 #container a:hover {
   text-decoration: underline;
 }
+
+@media screen and (max-width: 1024px) {
+  .mdl-layout__header {
+    display: inherit;
+  }
+  header .mdl-layout-title {
+    display: none;
+  }
+  header .mdl-layout__header-row {
+    padding-left: 0;
+  }
+  header .mdl-radio,
+  header .mdl-button {
+    margin-left: 8px;
+  }
+}
