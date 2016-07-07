@@ -41,6 +41,10 @@ header .mdl-radio__inner-circle {
   text-decoration: underline;
 }
 
+#container .mdl-card__supporting-text {
+  white-space: normal;
+}
+
 @media screen and (max-width: 1024px) {
   .mdl-layout__header {
     display: inherit;
