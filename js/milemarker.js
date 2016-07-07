@@ -62,34 +62,49 @@ $(function() {
         filterClass = 'tag-web';
       }
 
-      var row = document.createElement('tr');
-      row.className = filterClass;
+      function startRow() {
+        var row = document.createElement('tr');
+        row.className = filterClass;
 
-      var col1 = document.createElement('td');
-      col1.className = 'mdl-data-table__cell--non-numeric';
+        var col1 = document.createElement('td');
+        col1.className = 'mdl-data-table__cell--non-numeric';
 
-      var button = document.createElement('a');
-      button.href = repo.html_url;
-      button.appendChild(document.createTextNode(repo.shortName));
-      componentHandler.upgradeElement(button);
+        var button = document.createElement('a');
+        button.href = repo.html_url;
+        button.appendChild(document.createTextNode(repo.shortName));
+        componentHandler.upgradeElement(button);
 
-      col1.appendChild(button);
-      row.appendChild(col1);
+        col1.appendChild(button);
+        row.appendChild(col1);
 
-      var col2 = document.createElement('td');
-      col2.className = 'mdl-data-table__cell--non-numeric';
-      row.appendChild(col2);
-
-      var col3 = document.createElement('td');
-      col3.className = 'mdl-data-table__cell--non-numeric';
-      row.appendChild(col3);
-
-      $('#container tbody').append(row);
+        $('#container tbody').append(row);
+        return row;
+      }
 
       // Fetch this repo's milestones.
 
       requestGitHubAPI('/repos/material-motion/' + repo.name + '/milestones', function(json) {
+        if (json.length == 0) {
+          var row = startRow();
+          var col2 = document.createElement('td');
+          col2.className = 'mdl-data-table__cell--non-numeric';
+          row.appendChild(col2);
+
+          var col3 = document.createElement('td');
+          col3.className = 'mdl-data-table__cell--non-numeric';
+          row.appendChild(col3);
+        }
         for (var i = 0; i < json.length; ++i) {
+          var row = startRow();
+
+          var col2 = document.createElement('td');
+          col2.className = 'mdl-data-table__cell--non-numeric';
+          row.appendChild(col2);
+
+          var col3 = document.createElement('td');
+          col3.className = 'mdl-data-table__cell--non-numeric';
+          row.appendChild(col3);
+          
           var milestone = json[i];
           if (milestone.state == 'open') {
             var totalIssues = milestone.closed_issues + milestone.open_issues;
@@ -97,10 +112,12 @@ $(function() {
             var title = document.createElement('a');
             title.href = "https://github.com/" + repo.owner.login + "/" + repo.name + "/milestone/" + milestone.number;
 
-            title.appendChild(document.createTextNode(milestone.title + " :: " + milestone.open_issues + " issues remain"));
+            title.appendChild(document.createTextNode(milestone.title));
 
             var description = document.createElement('div');
-            description.innerHTML = md.render(milestone.description);
+            var descriptionHTML = md.render(milestone.description);
+            descriptionHTML += "<br/>" + milestone.open_issues + " issues remain";
+            description.innerHTML = descriptionHTML;
 
             col2.appendChild(createCard(title, description));
 
