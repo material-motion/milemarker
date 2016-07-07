@@ -127,7 +127,7 @@ $(function() {
   // Create a material lite card.
   function createCard(titleNode, descriptionNode) {
     var card = document.createElement('div');
-    card.className = 'mdl-card';
+    card.className = 'mdl-card mdl-shadow--2dp';
     titleNode.className = 'mdl-card__title';
     descriptionNode.className = 'mdl-card__supporting-text';
     card.appendChild(titleNode);
