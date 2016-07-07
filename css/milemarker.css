@@ -1,0 +1,42 @@
+.mdl-button {
+  text-align: left;
+}
+
+#nonmdmrepos {
+  border-top: 1px solid lightgrey;
+}
+
+header form {
+  margin-bottom: 0;
+}
+
+header .mdl-radio,
+header .mdl-button {
+  margin-left: 24px;
+}
+
+header .mdl-radio.is-checked .mdl-radio__outer-circle {
+  border-color: white;
+}
+
+.mdl-data-table tbody tr:hover {
+  background-color: inherit;
+}
+
+header .mdl-button,
+header .mdl-radio__inner-circle {
+  background: white;
+}
+
+#container {
+  margin-top: 24px;
+  margin: 0 auto;
+}
+
+#container a {
+  text-decoration: none;
+}
+
+#container a:hover {
+  text-decoration: underline;
+}
