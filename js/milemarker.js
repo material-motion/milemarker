@@ -41,15 +41,13 @@ $(function() {
     localStorage.clear();
   };
 
-  requestGitHubAPI('/orgs/material-motion/repos', function(json) {
-    json = json.sort(function(a, b) {
+  requestGitHubAPI('/orgs/material-motion/repos', function(repos) {
+    repos = repos.sort(function(a, b) {
         if (a.name < b.name) return -1;
         if (a.name > b.name) return 1;
         return 0;
     });
-    for (var i = 0; i < json.length; ++i) {
-      var repo = json[i];
-
+    repos.forEach(function(repo) {
       var name = repo.name.replace(/^material-motion-/, '');
       repo['shortName'] = name;
 
@@ -62,7 +60,7 @@ $(function() {
         filterClass = 'tag-web';
       }
 
-      function startRow() {
+      function startRow(r) {
         var row = document.createElement('tr');
         row.className = filterClass;
 
@@ -70,8 +68,8 @@ $(function() {
         col1.className = 'mdl-data-table__cell--non-numeric';
 
         var button = document.createElement('a');
-        button.href = repo.html_url;
-        button.appendChild(document.createTextNode(repo.shortName));
+        button.href = r.html_url;
+        button.appendChild(document.createTextNode(r.shortName));
         componentHandler.upgradeElement(button);
 
         col1.appendChild(button);
@@ -83,9 +81,9 @@ $(function() {
 
       // Fetch this repo's milestones.
 
-      requestGitHubAPI('/repos/material-motion/' + repo.name + '/milestones', function(json) {
-        if (json.length == 0) {
-          var row = startRow();
+      requestGitHubAPI('/repos/material-motion/' + repo.name + '/milestones', function(milestones) {
+        if (milestones.length == 0) {
+          var row = startRow(this);
           var col2 = document.createElement('td');
           col2.className = 'mdl-data-table__cell--non-numeric';
           row.appendChild(col2);
@@ -94,8 +92,8 @@ $(function() {
           col3.className = 'mdl-data-table__cell--non-numeric';
           row.appendChild(col3);
         }
-        for (var i = 0; i < json.length; ++i) {
-          var row = startRow();
+        milestones.forEach(function(milestone) {
+          var row = startRow(this);
 
           var col2 = document.createElement('td');
           col2.className = 'mdl-data-table__cell--non-numeric';
@@ -104,13 +102,12 @@ $(function() {
           var col3 = document.createElement('td');
           col3.className = 'mdl-data-table__cell--non-numeric';
           row.appendChild(col3);
-          
-          var milestone = json[i];
+
           if (milestone.state == 'open') {
             var totalIssues = milestone.closed_issues + milestone.open_issues;
 
             var title = document.createElement('a');
-            title.href = "https://github.com/" + repo.owner.login + "/" + repo.name + "/milestone/" + milestone.number;
+            title.href = "https://github.com/" + this.owner.login + "/" + this.name + "/milestone/" + milestone.number;
 
             title.appendChild(document.createTextNode(milestone.title));
 
@@ -130,9 +127,9 @@ $(function() {
               col3.appendChild(progress);
             }
           }
-        }
-      });
-    }
+        }.bind(repo));
+      }.bind(repo));
+    });
     
     reposloaded = true;
 
@@ -155,7 +152,8 @@ $(function() {
   // Cached github request.
   function requestGitHubAPI(path, callback) {
     var storage = localStorage.getItem(path);
-    if (storage) {
+    var storageTimestamp = localStorage.getItem(path + '.timestamp');
+    if (storage && storageTimestamp && Date.now() - storageTimestamp < 60 * 1000 ) {
       callback.call(null, JSON.parse(storage));
       return;
     }
@@ -163,6 +161,7 @@ $(function() {
       url: 'https://api.github.com' + path,
       complete: function(xhr) {
         localStorage.setItem(path, JSON.stringify(xhr.responseJSON));
+        localStorage.setItem(path + '.timestamp', Date.now());
         callback.call(null, xhr.responseJSON);
       }
     });
