@@ -45,6 +45,17 @@ header .mdl-radio__inner-circle {
   white-space: normal;
 }
 
+#container .mdl-card {
+  display: inline-block;
+  margin: 8px;
+  min-height: inherit;
+  vertical-align: top;
+}
+
+#container .mdl-card__actions .mdl-progress {
+  margin-top: 8px;
+}
+
 @media screen and (max-width: 1024px) {
   .mdl-layout__header {
     display: inherit;

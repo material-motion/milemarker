@@ -7,10 +7,7 @@ $(function() {
   // Invoked when the user clicks the radio buttons.
   function filterDidChange(radio) {
     localStorage.setItem('filter', radio.value);
-    if (!reposloaded) {
-      return;
-    }
-    $('#container tbody tr').hide();
+    $('#container .mdl-card').hide();
     $('.tag-' + radio.value).show();
   }
 
@@ -55,108 +52,89 @@ $(function() {
         filterClass = 'tag-web';
       }
 
-      function startRow(r) {
-        var row = document.createElement('tr');
-        row.className = filterClass;
-
-        var col1 = document.createElement('td');
-        col1.className = 'mdl-data-table__cell--non-numeric';
-
-        var button = document.createElement('a');
-        button.href = r.html_url;
-        button.appendChild(document.createTextNode(r.shortName));
-        componentHandler.upgradeElement(button);
-
-        col1.appendChild(button);
-        row.appendChild(col1);
-
-        $('#container tbody').append(row);
-        return row;
-      }
-
       // Fetch this repo's milestones.
 
-      requestGitHubAPI('/repos/material-motion/' + repo.name + '/milestones', function(milestones) {
-        if (milestones.length == 0) {
-          var row = startRow(this);
-          var col2 = document.createElement('td');
-          col2.className = 'mdl-data-table__cell--non-numeric';
-          row.appendChild(col2);
-
-          var col3 = document.createElement('td');
-          col3.className = 'mdl-data-table__cell--non-numeric';
-          row.appendChild(col3);
-        }
+      requestGitHubAPI('/repos/material-motion/' + repo.name + '/milestones', {
+        state: 'open',
+        sort: 'due_on'
+      }, function(milestones) {
         milestones.forEach(function(milestone) {
-          var row = startRow(this);
+          var totalIssues = milestone.closed_issues + milestone.open_issues;
 
-          var col2 = document.createElement('td');
-          col2.className = 'mdl-data-table__cell--non-numeric';
-          row.appendChild(col2);
+          var title = document.createElement('a');
+          title.href = "https://github.com/" + this.owner.login + "/" + this.name + "/milestone/" + milestone.number;
 
-          var col3 = document.createElement('td');
-          col3.className = 'mdl-data-table__cell--non-numeric';
-          row.appendChild(col3);
+          title.appendChild(document.createTextNode(this.shortName + " / " + milestone.title));
 
-          if (milestone.state == 'open') {
-            var totalIssues = milestone.closed_issues + milestone.open_issues;
+          var description = document.createElement('div');
+          var descriptionHTML = md.render(milestone.description);
+          description.innerHTML = descriptionHTML;
 
-            var title = document.createElement('a');
-            title.href = "https://github.com/" + this.owner.login + "/" + this.name + "/milestone/" + milestone.number;
+          var actions = document.createElement('div');
 
-            title.appendChild(document.createTextNode(milestone.title));
+          var links = document.createElement('div');
+          links.appendChild(document.createTextNode(milestone.open_issues + " issues remain"));
+          actions.appendChild(links);
 
-            var description = document.createElement('div');
-            var descriptionHTML = md.render(milestone.description);
-            descriptionHTML += "<br/>" + milestone.open_issues + " issues remain";
-            description.innerHTML = descriptionHTML;
+          if (totalIssues > 0) {
+            var progress = document.createElement('div');
+            progress.className = 'mdl-progress mdl-js-progress';
+            componentHandler.upgradeElement(progress);
+            progress.MaterialProgress.setProgress(milestone.closed_issues / totalIssues * 100);
 
-            col2.appendChild(createCard(title, description));
-
-            if (totalIssues > 0) {
-              var progress = document.createElement('div');
-              progress.className = 'mdl-progress mdl-js-progress';
-              componentHandler.upgradeElement(progress);
-              progress.MaterialProgress.setProgress(milestone.closed_issues / totalIssues * 100);
-
-              col3.appendChild(progress);
-            }
+            actions.appendChild(progress);
           }
-        }.bind(repo));
+
+          var card = createCard(title, description, actions);
+          card.className += " " + filterClass;
+          $('#container').append(card);
+
+          if ('tag-' + localStorage.getItem('filter') != filterClass) {
+            $(card).hide();
+          }
+        }, repo);
       }.bind(repo));
     });
-    
-    reposloaded = true;
-
-    loadRadioState();
   });
   
   // Utility methods
 
   // Create a material lite card.
-  function createCard(titleNode, descriptionNode) {
+  function createCard(titleNode, descriptionNode, actionsNode) {
     var card = document.createElement('div');
     card.className = 'mdl-card mdl-shadow--2dp';
     titleNode.className = 'mdl-card__title';
     descriptionNode.className = 'mdl-card__supporting-text';
+    actionsNode.className = 'mdl-card__actions mdl-card--border';
     card.appendChild(titleNode);
     card.appendChild(descriptionNode);
+    card.appendChild(actionsNode);
     return card;
   }
 
   // Cached github request.
-  function requestGitHubAPI(path, callback) {
-    var storage = localStorage.getItem(path);
-    var storageTimestamp = localStorage.getItem(path + '.timestamp');
-    if (storage && storageTimestamp && Date.now() - storageTimestamp < 60 * 1000 ) {
+  function requestGitHubAPI(path, data, callback) {
+    if (typeof callback === 'undefined') {
+      callback = data;
+      data = undefined;
+    }
+    var cacheKey = path;
+    if (data) {
+      cacheKey += "::" + JSON.stringify(data);
+    }
+    var storage = localStorage.getItem(cacheKey);
+    var storageTimestamp = localStorage.getItem(cacheKey + '.timestamp');
+    if (storage && storageTimestamp && Date.now() - storageTimestamp < 1 * 1000 ) {
       callback.call(null, JSON.parse(storage));
       return;
     }
     $.ajax({
+      type: 'get',
       url: 'https://api.github.com' + path,
+      data: data,
       complete: function(xhr) {
-        localStorage.setItem(path, JSON.stringify(xhr.responseJSON));
-        localStorage.setItem(path + '.timestamp', Date.now());
+        localStorage.setItem(cacheKey, JSON.stringify(xhr.responseJSON));
+        localStorage.setItem(cacheKey + '.timestamp', Date.now());
         callback.call(null, xhr.responseJSON);
       }
     });
