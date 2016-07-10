@@ -36,11 +36,6 @@ $(function() {
   }  
   $(document).ready(loadRadioState);
 
-  // Refresh button
-  document.getElementById('refresh').onclick = function() {
-    localStorage.clear();
-  };
-
   requestGitHubAPI('/orgs/material-motion/repos', function(repos) {
     repos = repos.sort(function(a, b) {
         if (a.name < b.name) return -1;
