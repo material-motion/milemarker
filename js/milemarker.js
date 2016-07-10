@@ -40,7 +40,7 @@ $(function() {
         return 0;
     });
     repos.forEach(function(repo) {
-      var name = repo.name.replace(/^material-motion-/, '');
+      var name = repo.name.replace(/^material-motion-/, '').replace(/-android$/, '');
       repo['shortName'] = name;
 
       var filterClass = 'tag-other';
@@ -102,7 +102,7 @@ $(function() {
   // Create a material lite card.
   function createCard(titleNode, descriptionNode, actionsNode) {
     var card = document.createElement('div');
-    card.className = 'mdl-card mdl-shadow--2dp';
+    card.className = 'mdl-cell mdl-color--white mdl-grid mdl-card  mdl-shadow--2dp';
     titleNode.className = 'mdl-card__title';
     descriptionNode.className = 'mdl-card__supporting-text';
     actionsNode.className = 'mdl-card__actions mdl-card--border';

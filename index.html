@@ -11,36 +11,46 @@
   <script src="js/milemarker.js"></script>
 </head>
 <body>
-<div class="demo-layout-transparent mdl-layout mdl-js-layout">
-  <header class="mdl-layout__header">
-    <div class="mdl-layout__header-row">
-      <span class="mdl-layout-title">Material Motion Milemarker</span>
-      <div class="mdl-layout-spacer"></div>
+<div class="mdl-layout__container">
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header has-drawer">
+    <header class="mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600 is-casting-shadow">
+      <div class="mdl-layout__header-row">
+        <span class="mdl-layout-title">Material Motion Milemarker</span>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+          <form name="filter">
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="filter-android">
+              <input type="radio" id="filter-android" class="mdl-radio__button" name="filterby" value="android">
+              <span class="mdl-radio__label">android</span>
+            </label>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="filter-appleos">
+              <input type="radio" id="filter-appleos" class="mdl-radio__button" name="filterby" value="appleos">
+              <span class="mdl-radio__label">appleOS</span>
+            </label>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="filter-web">
+              <input type="radio" id="filter-web" class="mdl-radio__button" name="filterby" value="web">
+              <span class="mdl-radio__label">web</span>
+            </label>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="filter-other">
+              <input type="radio" id="filter-other" class="mdl-radio__button" name="filterby" value="other">
+              <span class="mdl-radio__label">other</span>
+            </label>
+          </form>
+        </nav>
+      </div>
+    </header>
+    
+    <div class="mdl-layout__drawer mdl-color--blue-grey-800">
       <nav class="mdl-navigation">
-        <form name="filter">
-          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="filter-android">
-            <input type="radio" id="filter-android" class="mdl-radio__button" name="filterby" value="android">
-            <span class="mdl-radio__label">android</span>
-          </label>
-          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="filter-appleos">
-            <input type="radio" id="filter-appleos" class="mdl-radio__button" name="filterby" value="appleos">
-            <span class="mdl-radio__label">appleOS</span>
-          </label>
-          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="filter-web">
-            <input type="radio" id="filter-web" class="mdl-radio__button" name="filterby" value="web">
-            <span class="mdl-radio__label">web</span>
-          </label>
-          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="filter-other">
-            <input type="radio" id="filter-other" class="mdl-radio__button" name="filterby" value="other">
-            <span class="mdl-radio__label">other</span>
-          </label>
-        </form>
+        <a class="mdl-navigation__link active mdl-color-text--blue-grey-200" href=""><i class="mdl-color-text--blue-grey-200 material-icons" role="presentation">flag</i>Milestones</a>
       </nav>
     </div>
-  </header>
-  <main class="mdl-layout__content">
-    <div id="container"></div>
-  </main>
+    
+    <main class="mdl-layout__content mdl-color--grey-100">
+      <div id="container" class="mdl-grid demo-content">
+      </div>
+    </main>
+  </div>
 </div>
 </body>
 </html>

@@ -15,17 +15,9 @@ header .mdl-button {
   margin-left: 24px;
 }
 
-header .mdl-radio.is-checked .mdl-radio__outer-circle {
-  border-color: white;
-}
-
-.mdl-data-table tbody tr:hover {
-  background-color: inherit;
-}
-
-header .mdl-button,
-header .mdl-radio__inner-circle {
-  background: white;
+.mdl-layout__drawer {
+  box-shadow: none;
+  border-right: none;
 }
 
 #container {
