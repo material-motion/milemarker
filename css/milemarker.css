@@ -24,10 +24,16 @@ header .mdl-button {
   display: inline-block;
 }
 
+#container .mdl-card .mdl-card__supporting-text {
+  padding-bottom: 63px;
+}
+
 #container .mdl-card .mdl-card__actions {
   position: absolute;
   bottom: 0;
   left: 0;
+  width: 100%;
+  padding: 16px;
 }
 
 #container .mdl-card__actions .mdl-progress {

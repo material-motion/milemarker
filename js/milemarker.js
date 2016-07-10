@@ -61,10 +61,12 @@ $(function() {
         milestones.forEach(function(milestone) {
           var totalIssues = milestone.closed_issues + milestone.open_issues;
 
-          var title = document.createElement('a');
-          title.href = "https://github.com/" + this.owner.login + "/" + this.name + "/milestone/" + milestone.number;
+          var title = document.createElement('div');
+          var titleLink = document.createElement('a');
+          titleLink.href = "https://github.com/" + this.owner.login + "/" + this.name + "/milestone/" + milestone.number;
+          titleLink.appendChild(document.createTextNode(this.shortName + " / " + milestone.title));
 
-          title.appendChild(document.createTextNode(this.shortName + " / " + milestone.title));
+          title.appendChild(titleLink);
 
           var description = document.createElement('div');
           var descriptionHTML = md.render(milestone.description);
