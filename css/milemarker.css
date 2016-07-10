@@ -1,11 +1,3 @@
-.mdl-button {
-  text-align: left;
-}
-
-#nonmdmrepos {
-  border-top: 1px solid lightgrey;
-}
-
 header form {
   margin-bottom: 0;
 }
@@ -20,11 +12,6 @@ header .mdl-button {
   border-right: none;
 }
 
-#container {
-  margin-top: 24px;
-  margin: 0 auto;
-}
-
 #container a {
   text-decoration: none;
 }
@@ -33,15 +20,14 @@ header .mdl-button {
   text-decoration: underline;
 }
 
-#container .mdl-card__supporting-text {
-  white-space: normal;
-}
-
 #container .mdl-card {
   display: inline-block;
-  margin: 8px;
-  min-height: inherit;
-  vertical-align: top;
+}
+
+#container .mdl-card .mdl-card__actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 
 #container .mdl-card__actions .mdl-progress {
