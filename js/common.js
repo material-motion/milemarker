@@ -15,6 +15,11 @@ function sortRepos(repos) {
   });
 }
 
+function numberWithCommas(x) {
+  // http://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 // Create a material lite card.
 function createCard(titleNode, descriptionNode, actionsNode) {
   var card = document.createElement('div');
