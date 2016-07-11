@@ -1,28 +1,52 @@
 $(function() {
   requestGitHubAPI('/orgs/material-motion/repos', function(repos) {
+    var remainingRepos = new Set();
+    repos.forEach(function(repo) {
+      remainingRepos.add(repo.id);
+    });
+    
+    function didFinishRepo(repo) {
+      remainingRepos.delete(repo.id);
+
+      if (remainingRepos.size == 0) {
+        function sortCards(container) {
+          var cards = container.children(".mdl-card");
+          cards = cards.sort(function (prev, next) {
+            var prevDate = prev.getAttribute('data-due-on');
+            var nextDate = next.getAttribute('data-due-on');
+            if (prevDate && !nextDate) return -1;
+            if (!prevDate && nextDate) return 1;
+            if (prevDate < nextDate) return -1;
+            if (prevDate > nextDate) return 1;
+            return 0;
+          });
+          cards.detach().appendTo(container);          
+        }
+        sortCards($('#container .open'));
+        sortCards($('#container .closed'));
+      }
+    }
+
     sortRepos(repos).forEach(function(repo) {
       repo = preprocessRepo(repo);
 
       // Fetch this repo's milestones.
 
       requestGitHubAPI('/repos/material-motion/' + repo.name + '/milestones', {
-        state: 'open',
+        state: 'all',
         sort: 'due_on'
       }, function(milestones) {
         milestones.forEach(function(milestone) {
           var card = createMilestoneCard.bind(this)(milestone);
-          $('#container .open').append(card);
+          if (milestone.state == 'open') {
+            $('#container .open').append(card);
+            
+          } else if (milestone.state == 'closed') {
+            $('#container .closed').append(card);
+          }
         }, repo);
-      }.bind(repo));
-
-      requestGitHubAPI('/repos/material-motion/' + repo.name + '/milestones', {
-        state: 'closed',
-        sort: 'due_on'
-      }, function(milestones) {
-        milestones.forEach(function(milestone) {
-          var card = createMilestoneCard.bind(this)(milestone);
-          $('#container .closed').append(card);
-        }, repo);
+        
+        didFinishRepo(repo);
       }.bind(repo));
     });
   });
@@ -62,6 +86,7 @@ $(function() {
     }
 
     var card = createCard(title, description, actions);
+    card.setAttribute('data-due-on', milestone.due_on);
     didCreateFilterableNode(this, card);
     return card;
   }
