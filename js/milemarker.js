@@ -1,8 +1,4 @@
 $(function() {
-  var md = new Remarkable({
-    linkify: true
-  });
-
   requestGitHubAPI('/orgs/material-motion/repos', function(repos) {
     sortRepos(repos).forEach(function(repo) {
       repo = preprocessRepo(repo);

@@ -1,34 +1,36 @@
 $(function() {
   var tbody = $('#container table tbody');
-  requestGitHubAPI('/orgs/material-motion/repos', function(repos) {
-    sortRepos(repos).forEach(function(repo) {
-      repo = preprocessRepo(repo);
+  requestGitHubAPI('/search/issues', {q: "is:open user:material-motion label:\"Newbie friendly\" label:\"flow: Ready for action\" no:assignee"}, function(results) {
+    results.items.forEach(function(issue) {
+      issue = preprocessIssue(issue);
 
       var row = document.createElement('tr');
       tbody.append(row);
 
       function newColumn(contentNode) {
         var column = document.createElement('td');
-        if (contentNode) {
+        if (typeof contentNode == 'string') {
+          column.innerHTML = contentNode;
+        } else if (contentNode) {
           column.appendChild(contentNode);
         }
         row.appendChild(column);
         return column;
       }
-      
+
       function newTextColumn(contentNode) {
         var column = newColumn(contentNode);
         column.className = "mdl-data-table__cell--non-numeric";
         return column;
       }
-      
+
       function newHref(text, href) {
         var node = document.createElement('a');
         node.href = href;
         node.appendChild(typeof text == 'string' ? document.createTextNode(text) : text);
         return node;
       }
-      
+
       function newIcon(icon) {
         var node = document.createElement('i');
         node.className = "mdl-color-text--blue-grey-200 material-icons";
@@ -37,14 +39,11 @@ $(function() {
         return node;
       }
 
-      newTextColumn(newHref(repo.shortName, repo.html_url));
-      newTextColumn(repo.description ? document.createTextNode(repo.description) : null);
-      newTextColumn(repo.has_wiki ? newIcon('check_circle') : null);
-      newTextColumn(repo.has_issues ? newIcon('check_circle') : null);
-      newTextColumn(repo.has_pages ? newHref(newIcon('check_circle'), "https://" + repo.owner.login + ".github.io/" + repo.name + "/") : null);
-      newTextColumn(document.createTextNode(repo.default_branch));
+      newTextColumn(newHref(issue.repoShortName, issue.repo_html_url));
+      newTextColumn(newHref(issue.title, issue.html_url));
+      newTextColumn(md.render(issue.body));
       
-      didCreateFilterableNode(repo, row);
+      didCreateFilterableNode(issue, row);
     });
   });
   

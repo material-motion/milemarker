@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Milemarker</title>
+  <title>newbie-friendly tasks :: Milemarker</title>
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.indigo-pink.min.css">
@@ -9,14 +9,14 @@
   <script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/remarkable/1.6.2/remarkable.min.js"></script>
   <script src="js/common.js"></script>
-  <script src="js/milemarker.js"></script>
+  <script src="js/newbie.js"></script>
 </head>
 <body>
 <div class="mdl-layout__container">
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header has-drawer">
     <header class="mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600 is-casting-shadow">
       <div class="mdl-layout__header-row">
-        <span class="mdl-layout-title">Material Motion Milemarker :: milestones</span>
+        <span class="mdl-layout-title">Material Motion Milemarker :: newbie-friendly tasks</span>
         <div class="mdl-layout-spacer"></div>
         <nav class="mdl-navigation">
           <form name="filter">
@@ -50,9 +50,18 @@
     </div>
     
     <main class="mdl-layout__content mdl-color--grey-100">
-      <div id="container">
-        <div class="open mdl-grid"></div>
-        <div class="closed mdl-grid mdl-color--green-50"></div>
+      <div id="container" class="mdl-grid">
+        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+          <thead>
+            <tr>
+              <th class="mdl-data-table__cell--non-numeric">Name</th>
+              <th class="mdl-data-table__cell--non-numeric">Description</th>
+              <th class="mdl-data-table__cell--non-numeric">Repository</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
       </div>
     </main>
   </div>

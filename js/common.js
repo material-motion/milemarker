@@ -1,7 +1,11 @@
+var md = new Remarkable({
+  linkify: true
+});
+
 // Invoked when the user clicks the radio buttons.
 function filterDidChange(radio) {
   localStorage.setItem('filter', radio.value);
-  $('#container .repo-node').hide();
+  $('#container .filterable-node').hide();
   $('.tag-' + radio.value).show();
 }
 
@@ -33,14 +37,60 @@ function createCard(titleNode, descriptionNode, actionsNode) {
   return card;
 }
 
-function shouldHideRepo(repo) {
-  return 'tag-' + localStorage.getItem('filter') != repo.filterClass;
+function shortNameForRepoName(repoName) {
+  return repoName.replace(/^material-motion-/, '').replace(/-android$/, '');
 }
 
-function didCreateRepoNode(repo, repoNode) {
-  repoNode.className += " repo-node " + repo.filterClass;
-  if (shouldHideRepo(repo)) {
-    $(repoNode).hide();
+function preprocessRepo(repo) {
+  repo['shortName'] = shortNameForRepoName(repo.name);
+
+  var filterClass = 'tag-other';
+  if (repo.name.match(/-android$/)) {
+    filterClass = 'tag-android';
+  } else if (repo.name.match(/-(objc|swift)$/)) {
+    filterClass = 'tag-appleos';
+  } else if (repo.name.match(/-(web|js)$/)) {
+    filterClass = 'tag-web';
+  }
+  repo['filterClass'] = filterClass;
+  return repo;
+}
+
+function preprocessIssue(issue) {
+  var re = /repos\/(.+?)\/(.+?)$/; 
+  var m;
+ 
+  if ((m = re.exec(issue.repository_url)) !== null) {
+    if (m.index === re.lastIndex) {
+      re.lastIndex++;
+    }
+
+    issue['repo_html_url'] = "https://github.com/" + m[1] + "/" + m[2];
+    issue['repo'] = m[2];
+  }
+
+  issue['repoShortName'] = shortNameForRepoName(issue.repo);
+
+  var filterClass = 'tag-other';
+  if (issue.repo.match(/-android$/)) {
+    filterClass = 'tag-android';
+  } else if (issue.repo.match(/-(objc|swift)$/)) {
+    filterClass = 'tag-appleos';
+  } else if (issue.repo.match(/-(web|js)$/)) {
+    filterClass = 'tag-web';
+  }
+  issue['filterClass'] = filterClass;
+  return issue;
+}
+
+function shouldHideFilterableNode(object) {
+  return 'tag-' + localStorage.getItem('filter') != object.filterClass;
+}
+
+function didCreateFilterableNode(object, node) {
+  node.className += " filterable-node " + object.filterClass;
+  if (shouldHideFilterableNode(object)) {
+    $(node).hide();
   }
 }
 
@@ -70,22 +120,6 @@ function requestGitHubAPI(path, data, callback) {
       callback.call(null, xhr.responseJSON);
     }
   });
-}
-
-function preprocessRepo(repo) {
-  var name = repo.name.replace(/^material-motion-/, '').replace(/-android$/, '');
-  repo['shortName'] = name;
-
-  var filterClass = 'tag-other';
-  if (repo.name.match(/-android$/)) {
-    filterClass = 'tag-android';
-  } else if (repo.name.match(/-(objc|swift)$/)) {
-    filterClass = 'tag-appleos';
-  } else if (repo.name.match(/-(web|js)$/)) {
-    filterClass = 'tag-web';
-  }
-  repo['filterClass'] = filterClass;
-  return repo;
 }
 
 $(function() {
