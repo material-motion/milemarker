@@ -38,7 +38,7 @@ $(function() {
       }
 
       newTextColumn(newHref(repo.shortName, repo.html_url));
-      newTextColumn(document.createTextNode(repo.description));
+      newTextColumn(repo.description ? document.createTextNode(repo.description) : null);
       newTextColumn(repo.has_wiki ? newIcon('check_circle') : null);
       newTextColumn(repo.has_issues ? newIcon('check_circle') : null);
       newTextColumn(repo.has_pages ? newHref(newIcon('check_circle'), "https://" + repo.owner.login + ".github.io/" + repo.name + "/") : null);
