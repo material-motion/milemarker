@@ -29,11 +29,11 @@ function createCard(titleNode, descriptionNode, actionsNode) {
   var card = document.createElement('div');
   card.className = 'mdl-cell mdl-color--white mdl-grid mdl-card mdl-shadow--2dp';
   titleNode.className = 'mdl-card__title';
-  descriptionNode.className = 'mdl-card__supporting-text';
-  actionsNode.className = 'mdl-card__actions mdl-card--border';
+  actionsNode.className = 'mdl-card__supporting-text';
+  descriptionNode.className = 'mdl-card__actions mdl-card--border';
   card.appendChild(titleNode);
-  card.appendChild(descriptionNode);
   card.appendChild(actionsNode);
+  card.appendChild(descriptionNode);
   return card;
 }
 
