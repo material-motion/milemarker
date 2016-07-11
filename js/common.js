@@ -56,7 +56,7 @@ function requestGitHubAPI(path, data, callback) {
   }
   var storage = localStorage.getItem(cacheKey);
   var storageTimestamp = localStorage.getItem(cacheKey + '.timestamp');
-  if (storage && storageTimestamp && Date.now() - storageTimestamp < 1 * 1000 ) {
+  if (storage && storageTimestamp && Date.now() - storageTimestamp < 5 * 60 * 1000 ) {
     callback.call(null, JSON.parse(storage));
     return;
   }
