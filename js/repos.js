@@ -44,8 +44,6 @@ $(function() {
       newTextColumn(repo.has_pages ? newHref(newIcon('check_circle'), "https://" + repo.owner.login + ".github.io/" + repo.name + "/") : null);
       newTextColumn(document.createTextNode(repo.default_branch));
       
-      console.log(repo);
-      
       didCreateRepoNode(repo, row);
     });
   });
