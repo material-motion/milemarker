@@ -7,6 +7,12 @@ header .mdl-button {
   margin-left: 24px;
 }
 
+.mdl-layout__drawer nav {
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+}
+
 .mdl-layout__drawer {
   box-shadow: none;
   border-right: none;

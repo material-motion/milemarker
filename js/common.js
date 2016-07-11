@@ -142,5 +142,11 @@ $(function() {
       radio.click();
       filterDidChange(radio);
     }
+  
+    document.getElementById('clear').onclick = function(event) {
+      event.stopPropagation();
+      localStorage.clear();
+      window.location.reload();
+    }
   });
 });
