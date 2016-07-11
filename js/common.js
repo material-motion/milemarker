@@ -1,8 +1,16 @@
 // Invoked when the user clicks the radio buttons.
 function filterDidChange(radio) {
   localStorage.setItem('filter', radio.value);
-  $('#container .mdl-card').hide();
+  $('#container .repo-node').hide();
   $('.tag-' + radio.value).show();
+}
+
+function sortRepos(repos) {
+ return repos.sort(function(a, b) {
+      if (a.name < b.name) return -1;
+      if (a.name > b.name) return 1;
+      return 0;
+  });
 }
 
 // Create a material lite card.
@@ -16,6 +24,17 @@ function createCard(titleNode, descriptionNode, actionsNode) {
   card.appendChild(descriptionNode);
   card.appendChild(actionsNode);
   return card;
+}
+
+function shouldHideRepo(repo) {
+  return 'tag-' + localStorage.getItem('filter') != repo.filterClass;
+}
+
+function didCreateRepoNode(repo, repoNode) {
+  repoNode.className += " repo-node " + repo.filterClass;
+  if (shouldHideRepo(repo)) {
+    $(repoNode).hide();
+  }
 }
 
 // Cached github request.
@@ -44,6 +63,22 @@ function requestGitHubAPI(path, data, callback) {
       callback.call(null, xhr.responseJSON);
     }
   });
+}
+
+function preprocessRepo(repo) {
+  var name = repo.name.replace(/^material-motion-/, '').replace(/-android$/, '');
+  repo['shortName'] = name;
+
+  var filterClass = 'tag-other';
+  if (repo.name.match(/-android$/)) {
+    filterClass = 'tag-android';
+  } else if (repo.name.match(/-(objc|swift)$/)) {
+    filterClass = 'tag-appleos';
+  } else if (repo.name.match(/-(web|js)$/)) {
+    filterClass = 'tag-web';
+  }
+  repo['filterClass'] = filterClass;
+  return repo;
 }
 
 $(function() {

@@ -40,6 +40,14 @@ header .mdl-button {
   margin-top: 8px;
 }
 
+#container .closed {
+  border-top: 16px solid #DDD;
+}
+
+table td {
+  white-space: normal;
+}
+
 @media screen and (max-width: 1024px) {
   .mdl-layout__header {
     display: inherit;

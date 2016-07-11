@@ -4,24 +4,8 @@ $(function() {
   });
 
   requestGitHubAPI('/orgs/material-motion/repos', function(repos) {
-    repos = repos.sort(function(a, b) {
-        if (a.name < b.name) return -1;
-        if (a.name > b.name) return 1;
-        return 0;
-    });
-    repos.forEach(function(repo) {
-      var name = repo.name.replace(/^material-motion-/, '').replace(/-android$/, '');
-      repo['shortName'] = name;
-
-      var filterClass = 'tag-other';
-      if (repo.name.match(/-android$/)) {
-        filterClass = 'tag-android';
-      } else if (repo.name.match(/-(objc|swift)$/)) {
-        filterClass = 'tag-appleos';
-      } else if (repo.name.match(/-(web|js)$/)) {
-        filterClass = 'tag-web';
-      }
-      repo['filterClass'] = filterClass;
+    sortRepos(repos).forEach(function(repo) {
+      repo = preprocessRepo(repo);
 
       // Fetch this repo's milestones.
 
@@ -78,10 +62,7 @@ $(function() {
     }
 
     var card = createCard(title, description, actions);
-    card.className += " " + this.filterClass;
-    if ('tag-' + localStorage.getItem('filter') != this.filterClass) {
-      $(card).hide();
-    }
+    didCreateRepoNode(this, card);
     return card;
   }
 });
