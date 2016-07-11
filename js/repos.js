@@ -15,7 +15,7 @@ $(function() {
         row.appendChild(column);
         return column;
       }
-      
+
       function newTextColumn(contentNode) {
         var column = newColumn(contentNode);
         column.className = "mdl-data-table__cell--non-numeric";

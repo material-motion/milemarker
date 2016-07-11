@@ -62,7 +62,7 @@ $(function() {
     }
 
     var card = createCard(title, description, actions);
-    didCreateRepoNode(this, card);
+    didCreateFilterableNode(this, card);
     return card;
   }
 });
