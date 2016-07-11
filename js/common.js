@@ -5,6 +5,8 @@ function filterDidChange(radio) {
   $('.tag-' + radio.value).show();
 }
 
+var partyMoji = String.fromCodePoint(0x1F389);
+
 function sortRepos(repos) {
  return repos.sort(function(a, b) {
       if (a.name < b.name) return -1;

@@ -48,8 +48,12 @@ $(function() {
     var actions = document.createElement('div');
 
     var links = document.createElement('div');
-    var pluralText = milestone.open_issues == 1 ? "issue remains" : "issues remain";
-    links.appendChild(document.createTextNode(milestone.open_issues + " " + pluralText + " out of " + totalIssues));
+    if (milestone.state == 'open') {
+      var pluralText = milestone.open_issues == 1 ? "issue remains" : "issues remain";
+      links.appendChild(document.createTextNode(milestone.open_issues + " " + pluralText + " out of " + totalIssues));
+    } else {
+      links.appendChild(document.createTextNode(partyMoji + " Closed on " + milestone.closed_at.replace(/T.+$/, '') + " " + partyMoji));
+    }
     actions.appendChild(links);
 
     if (totalIssues > 0) {
