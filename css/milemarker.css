@@ -40,8 +40,8 @@ header .mdl-button {
   margin-top: 8px;
 }
 
-#container .closed {
-  border-top: 16px solid #DDD;
+#container .closed .mdl-progress>.progressbar {
+  background-color: #4caf50;
 }
 
 table td {
