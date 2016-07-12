@@ -2,11 +2,25 @@ var md = new Remarkable({
   linkify: true
 });
 
+// http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+function getParameterByName(name) {
+  url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 // Invoked when the user clicks the radio buttons.
 function filterDidChange(radio) {
   localStorage.setItem('filter', radio.value);
   $('#container .filterable-node').hide();
   $('.tag-' + radio.value).show();
+  
+  var href = window.location.href.replace(/\?.+/, '');
+  window.history.replaceState(null, null, href + "?filterby=" + radio.value);
 }
 
 var partyMoji = String.fromCodePoint(0x1F389);
@@ -132,7 +146,7 @@ $(function() {
   }
 
   $(document).ready(function() {
-    var filter = localStorage.getItem('filter');
+    var filter = getParameterByName('filterby') || localStorage.getItem('filter');
     if (filter) {
       var radio = document.getElementById('filter-' + filter);
       radio.click();
