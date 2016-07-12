@@ -51,25 +51,25 @@ function createCard(titleNode, descriptionNode, actionsNode) {
   return card;
 }
 
-function newStarButton(url) {
+function isStarred(object) {
+  var value = localStorage.getItem('filter-'+object.starfilterurl);
+  if (value == "true") {
+    return true;
+  }
+  return false;
+}
+
+function newStarButton(object, url) {
   var starButton = document.createElement('a');
   starButton.href = '#starme';
-  starButton.onclick = function(event) {
-    
-    if (this.childNodes[0].innerHTML == 'star') {
-      localStorage.setItem('filter-'+url, false);
-      this.childNodes[0].innerHTML = 'star_border';
-    } else {
-      localStorage.setItem('filter-'+url, true);
-      this.childNodes[0].innerHTML = 'star';
-    }
-    return false;
-  };
-  if (localStorage.getItem('filter-'+url)) {
+  object['starfilterurl'] = url;
+
+  if (isStarred(object)) {
     starButton.appendChild(newIcon('star'));
   } else {
     starButton.appendChild(newIcon('star_border'));
   }
+
   return starButton;
 }
 
@@ -134,11 +134,27 @@ function shouldHideFilterableNode(object) {
   return 'tag-' + localStorage.getItem('filter') != object.filterClass;
 }
 
-function didCreateFilterableNode(object, node) {
+function didCreateFilterableNode(object, node, starNode) {
   node.className += " filterable-node " + object.filterClass;
+  if (isStarred(object)) {
+    node.className += " tag-starred";
+  }
   if (shouldHideFilterableNode(object)) {
     $(node).hide();
   }
+
+  starNode.onclick = function(event) {
+    if (this.childNodes[0].innerHTML == 'star') {
+      localStorage.setItem('filter-'+object.starfilterurl, false);
+      this.childNodes[0].innerHTML = 'star_border';
+      node.classList.remove('tag-starred');
+    } else {
+      localStorage.setItem('filter-'+object.starfilterurl, true);
+      this.childNodes[0].innerHTML = 'star';
+      node.classList.add('tag-starred');
+    }
+    return false;
+  };
 }
 
 // Cached github request.
@@ -179,7 +195,13 @@ $(function() {
   }
 
   $(document).ready(function() {
-    var filter = getParameterByName('filterby') || localStorage.getItem('filter');
+    var filter = null;
+    var queryFilter = getParameterByName('filterby');
+    if (typeof queryFilter == 'string') {
+      filter = getParameterByName('filterby');
+    } else {
+      filter = localStorage.getItem('filter');
+    }
     if (filter) {
       var radio = document.getElementById('filter-' + filter);
       radio.click();

@@ -60,7 +60,8 @@ $(function() {
     titleLink.href = "https://github.com/" + this.owner.login + "/" + this.name + "/milestone/" + milestone.number;
     titleLink.appendChild(document.createTextNode(this.shortName + " / " + milestone.title));
 
-    title.appendChild(newStarButton(titleLink.href));
+    var starNode = newStarButton(this, titleLink.href);
+    title.appendChild(starNode);
     title.appendChild(titleLink);
 
     var description = document.createElement('div');
@@ -96,7 +97,7 @@ $(function() {
 
     var card = createCard(title, description, actions);
     card.setAttribute('data-due-on', milestone.due_on);
-    didCreateFilterableNode(this, card);
+    didCreateFilterableNode(this, card, starNode);
     return card;
   }
 });

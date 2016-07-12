@@ -39,12 +39,13 @@ $(function() {
         return node;
       }
 
-      newTextColumn(newStarButton(issue.html_url));
+      var starNode = newStarButton(issue, issue.html_url);
+      newTextColumn(starNode);
       newTextColumn(newHref(issue.repoShortName, issue.repo_html_url));
       newTextColumn(newHref(issue.title, issue.html_url));
       newTextColumn(md.render(issue.body));
       
-      didCreateFilterableNode(issue, row);
+      didCreateFilterableNode(issue, row, starNode);
     });
   });
   

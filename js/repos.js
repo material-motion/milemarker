@@ -29,15 +29,16 @@ $(function() {
         return node;
       }
 
-      newTextColumn(newStarButton(repo.html_url));
+      var starNode = newStarButton(repo, repo.html_url);
+      newTextColumn(starNode);
       newTextColumn(newHref(repo.shortName, repo.html_url));
       newTextColumn(repo.description ? document.createTextNode(repo.description) : null);
       newTextColumn(repo.has_wiki ? newIcon('check_circle') : null);
       newTextColumn(repo.has_issues ? newIcon('check_circle') : null);
       newTextColumn(repo.has_pages ? newHref(newIcon('check_circle'), "https://" + repo.owner.login + ".github.io/" + repo.name + "/") : null);
       newTextColumn(document.createTextNode(repo.default_branch));
-      
-      didCreateFilterableNode(repo, row);
+
+      didCreateFilterableNode(repo, row, starNode);
     });
   });
   
