@@ -28,15 +28,8 @@ $(function() {
         node.appendChild(typeof text == 'string' ? document.createTextNode(text) : text);
         return node;
       }
-      
-      function newIcon(icon) {
-        var node = document.createElement('i');
-        node.className = "mdl-color-text--blue-grey-200 material-icons";
-        node.setAttribute('role', "presentation");
-        node.innerHTML = icon;
-        return node;
-      }
 
+      newTextColumn(newStarButton());
       newTextColumn(newHref(repo.shortName, repo.html_url));
       newTextColumn(repo.description ? document.createTextNode(repo.description) : null);
       newTextColumn(repo.has_wiki ? newIcon('check_circle') : null);

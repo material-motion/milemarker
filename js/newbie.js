@@ -39,6 +39,7 @@ $(function() {
         return node;
       }
 
+      newTextColumn(newStarButton());
       newTextColumn(newHref(issue.repoShortName, issue.repo_html_url));
       newTextColumn(newHref(issue.title, issue.html_url));
       newTextColumn(md.render(issue.body));

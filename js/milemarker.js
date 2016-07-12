@@ -55,6 +55,9 @@ $(function() {
     var totalIssues = milestone.closed_issues + milestone.open_issues;
 
     var title = document.createElement('div');
+
+    title.appendChild(newStarButton());
+
     var titleLink = document.createElement('a');
     titleLink.href = "https://github.com/" + this.owner.login + "/" + this.name + "/milestone/" + milestone.number;
     titleLink.appendChild(document.createTextNode(this.shortName + " / " + milestone.title));

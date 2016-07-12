@@ -51,6 +51,32 @@ function createCard(titleNode, descriptionNode, actionsNode) {
   return card;
 }
 
+function newStarButton() {
+  var starButton = document.createElement('a');
+  starButton.href = '#starme';
+  starButton.onclick = function(event) {
+    if (this.childNodes[0].innerHTML == 'star') {
+      this.childNodes[0].innerHTML = 'star_border';
+    } else {
+      this.childNodes[0].innerHTML = 'star';
+    }
+    return false;
+  };
+  starButton.appendChild(newIcon('star_border'));
+  return starButton;
+}
+
+// Create a material lite icon.
+// @param icon the icon identifier, as defined at https://design.google.com/icons/
+//             Example: check_circle
+function newIcon(icon) {
+  var node = document.createElement('i');
+  node.className = "mdl-color-text--blue-grey-200 material-icons";
+  node.setAttribute('role', "presentation");
+  node.innerHTML = icon;
+  return node;
+}
+
 function shortNameForRepoName(repoName) {
   return repoName.replace(/^material-motion-/, '').replace(/-android$/, '');
 }
