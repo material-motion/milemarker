@@ -29,7 +29,7 @@ $(function() {
         return node;
       }
 
-      newTextColumn(newStarButton());
+      newTextColumn(newStarButton(repo.html_url));
       newTextColumn(newHref(repo.shortName, repo.html_url));
       newTextColumn(repo.description ? document.createTextNode(repo.description) : null);
       newTextColumn(repo.has_wiki ? newIcon('check_circle') : null);

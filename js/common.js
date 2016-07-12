@@ -51,18 +51,25 @@ function createCard(titleNode, descriptionNode, actionsNode) {
   return card;
 }
 
-function newStarButton() {
+function newStarButton(url) {
   var starButton = document.createElement('a');
   starButton.href = '#starme';
   starButton.onclick = function(event) {
+    
     if (this.childNodes[0].innerHTML == 'star') {
+      localStorage.setItem('filter-'+url, false);
       this.childNodes[0].innerHTML = 'star_border';
     } else {
+      localStorage.setItem('filter-'+url, true);
       this.childNodes[0].innerHTML = 'star';
     }
     return false;
   };
-  starButton.appendChild(newIcon('star_border'));
+  if (localStorage.getItem('filter-'+url)) {
+    starButton.appendChild(newIcon('star'));
+  } else {
+    starButton.appendChild(newIcon('star_border'));
+  }
   return starButton;
 }
 

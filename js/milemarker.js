@@ -56,12 +56,11 @@ $(function() {
 
     var title = document.createElement('div');
 
-    title.appendChild(newStarButton());
-
     var titleLink = document.createElement('a');
     titleLink.href = "https://github.com/" + this.owner.login + "/" + this.name + "/milestone/" + milestone.number;
     titleLink.appendChild(document.createTextNode(this.shortName + " / " + milestone.title));
 
+    title.appendChild(newStarButton(titleLink.href));
     title.appendChild(titleLink);
 
     var description = document.createElement('div');
