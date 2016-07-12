@@ -69,16 +69,15 @@ $(function() {
 
     var links = document.createElement('div');
     if (milestone.state == 'open') {
-      if (totalIssues == 0) {
-        var link = document.createElement('a');
-        link.href = "https://github.com/" + this.owner.login + "/" + this.name + "/issues/new?milestone=" + milestone.number;
-        link.appendChild(document.createTextNode("File new issue"));
-        links.appendChild(link);
-
-      } else {
+      if (totalIssues > 0) {
         var pluralText = milestone.open_issues == 1 ? "issue remains" : "issues remain";
-        links.appendChild(document.createTextNode(milestone.open_issues + " " + pluralText + " out of " + totalIssues));
+        links.appendChild(document.createTextNode(milestone.open_issues + " " + pluralText + " out of " + totalIssues + " :: "));
       }
+      var link = document.createElement('a');
+      link.href = "https://github.com/" + this.owner.login + "/" + this.name + "/issues/new?milestone=" + milestone.number;
+      link.appendChild(document.createTextNode("File new issue"));
+      links.appendChild(link);
+
     } else {
       links.appendChild(document.createTextNode(partyMoji + " Closed on " + milestone.closed_at.replace(/T.+$/, '') + " " + partyMoji));
     }
