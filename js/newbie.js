@@ -1,6 +1,6 @@
 $(function() {
   var tbody = $('#container table tbody');
-  requestGitHubAPI('/search/issues', {q: "is:open user:material-motion label:\"Newbie friendly\" label:\"flow: Ready for action\" no:assignee"}, function(results) {
+  requestGitHubAPI('/search/issues', {q: "is:open user:" + owner_name + " label:\"Newbie friendly\" label:\"flow: Ready for action\" no:assignee"}, function(results) {
     results.items.forEach(function(issue) {
       issue = preprocessIssue(issue);
 

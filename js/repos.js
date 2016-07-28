@@ -1,6 +1,6 @@
 $(function() {
   var tbody = $('#container table tbody');
-  requestGitHubAPI('/orgs/material-motion/repos', function(repos) {
+  requestGitHubAPI('/orgs/' + owner_name + '/repos', function(repos) {
     sortRepos(repos).forEach(function(repo) {
       repo = preprocessRepo(repo);
 

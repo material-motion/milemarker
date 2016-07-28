@@ -2,6 +2,12 @@ var md = new Remarkable({
   linkify: true
 });
 
+// Assumes that this site is hosted as a subdomain on github.io.
+var owner_name = window.location.hostname.substr(0, window.location.hostname.indexOf('.'));
+if (!owner_name) {
+  owner_name = 'material-motion';
+}
+
 // http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
 function getParameterByName(name) {
   url = window.location.href;
@@ -85,7 +91,8 @@ function newIcon(icon) {
 }
 
 function shortNameForRepoName(repoName) {
-  return repoName.replace(/^material-motion-/, '').replace(/-android$/, '');
+  var re = new RegExp("^" + owner_name + "-");
+  return repoName.replace(re, '').replace(/-android$/, '');
 }
 
 function preprocessRepo(repo) {

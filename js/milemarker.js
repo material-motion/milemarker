@@ -1,5 +1,5 @@
 $(function() {
-  requestGitHubAPI('/orgs/material-motion/repos', function(repos) {
+  requestGitHubAPI('/orgs/' + owner_name + '/repos', function(repos) {
     var remainingRepos = new Set();
     repos.forEach(function(repo) {
       remainingRepos.add(repo.id);
@@ -32,7 +32,7 @@ $(function() {
 
       // Fetch this repo's milestones.
 
-      requestGitHubAPI('/repos/material-motion/' + repo.name + '/milestones', {
+      requestGitHubAPI('/repos/' + owner_name + '/' + repo.name + '/milestones', {
         state: 'all',
         sort: 'due_on'
       }, function(milestones) {
