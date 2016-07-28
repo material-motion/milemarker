@@ -36,9 +36,23 @@ $(function() {
         milestones.forEach(function(milestone) {
           var row = document.createElement('tr');
 
+          var owner = null;
+          var owner_html = null;
+          var m;
+          if ((m = /owner: (.+?)$/.exec(milestone.description)) !== null) {
+            owner = m[1];
+            if (owner == 'jverkoey') {
+              owner_html = "https://github.com/jverkoey";
+              owner = 'featherless';
+            } else {
+              owner_html = "https://github.com/" + owner;
+            }
+          }
+
           var starNode = newStarButton(repo, repo.html_url);
           row.appendChild(newTextColumn(starNode));
-          row.appendChild(newColumn((milestone.state == 'closed') ? newIcon('check_circle') : null));
+          row.appendChild(newTextColumn(owner ? newHref(owner, owner_html) : null));
+          row.appendChild(newTextColumn((milestone.state == 'closed') ? newIcon('check_circle') : null));
           row.appendChild(newTextColumn(newHref(repo.shortName, repo.html_url)));
           row.appendChild(newTextColumn(newHref(milestone.title, "https://github.com/" + repo.owner.login + "/" + repo.name + "/milestone/" + milestone.number)));
 
