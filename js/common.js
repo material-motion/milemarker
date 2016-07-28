@@ -39,6 +39,37 @@ function sortRepos(repos) {
   });
 }
 
+function newColumn(contentNode) {
+  var column = document.createElement('td');
+  if (typeof contentNode == 'string') {
+    column.innerHTML = contentNode;
+  } else if (contentNode) {
+    column.appendChild(contentNode);
+  }
+  return column;
+}
+
+function newTextColumn(contentNode) {
+  var column = newColumn(contentNode);
+  column.className = "mdl-data-table__cell--non-numeric";
+  return column;
+}
+
+function newHref(text, href) {
+  var node = document.createElement('a');
+  node.href = href;
+  node.appendChild(typeof text == 'string' ? document.createTextNode(text) : text);
+  return node;
+}
+
+function newIcon(icon) {
+  var node = document.createElement('i');
+  node.className = "mdl-color-text--blue-grey-200 material-icons";
+  node.setAttribute('role', "presentation");
+  node.innerHTML = icon;
+  return node;
+}
+
 function numberWithCommas(x) {
   // http://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

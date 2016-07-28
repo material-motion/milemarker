@@ -7,43 +7,11 @@ $(function() {
       var row = document.createElement('tr');
       tbody.append(row);
 
-      function newColumn(contentNode) {
-        var column = document.createElement('td');
-        if (typeof contentNode == 'string') {
-          column.innerHTML = contentNode;
-        } else if (contentNode) {
-          column.appendChild(contentNode);
-        }
-        row.appendChild(column);
-        return column;
-      }
-
-      function newTextColumn(contentNode) {
-        var column = newColumn(contentNode);
-        column.className = "mdl-data-table__cell--non-numeric";
-        return column;
-      }
-
-      function newHref(text, href) {
-        var node = document.createElement('a');
-        node.href = href;
-        node.appendChild(typeof text == 'string' ? document.createTextNode(text) : text);
-        return node;
-      }
-
-      function newIcon(icon) {
-        var node = document.createElement('i');
-        node.className = "mdl-color-text--blue-grey-200 material-icons";
-        node.setAttribute('role', "presentation");
-        node.innerHTML = icon;
-        return node;
-      }
-
       var starNode = newStarButton(issue, issue.html_url);
-      newTextColumn(starNode);
-      newTextColumn(newHref(issue.repoShortName, issue.repo_html_url));
-      newTextColumn(newHref(issue.title, issue.html_url));
-      newTextColumn(md.render(issue.body));
+      row.appendChild(newTextColumn(starNode));
+      row.appendChild(newTextColumn(newHref(issue.repoShortName, issue.repo_html_url)));
+      row.appendChild(newTextColumn(newHref(issue.title, issue.html_url)));
+      row.appendChild(newTextColumn(md.render(issue.body)));
       
       didCreateFilterableNode(issue, row, starNode);
     });
