@@ -67,8 +67,8 @@ $(function() {
           row.appendChild(newTextColumn(owner ? newHref(owner, owner_html) : null));
           row.appendChild(newTextColumn((milestone.state == 'closed') ? newIcon('check_circle') : null));
           row.appendChild(newTextColumn(newHref(repo.shortName, repo.html_url)));
-          row.appendChild(newTextColumn(due_date.fromNow()));
           row.appendChild(newTextColumn(newHref(milestone.title, "https://github.com/" + repo.owner.login + "/" + repo.name + "/milestone/" + milestone.number)));
+          row.appendChild(newTextColumn(due_date.fromNow()));
 
           var totalIssues = milestone.closed_issues + milestone.open_issues;
           if (totalIssues > 0) {
