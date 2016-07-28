@@ -49,11 +49,25 @@ $(function() {
             }
           }
 
+          var date = null;
+          if (milestone.closed_at) {
+            date = milestone.closed_at;
+          } else if (milestone.due_on) {
+            date = milestone.due_on;
+          } else {
+            return;
+          }
+
+          row.setAttribute('data-date', date);
+
+          var due_date = moment(date);
+
           var starNode = newStarButton(repo, repo.html_url);
           row.appendChild(newTextColumn(starNode));
           row.appendChild(newTextColumn(owner ? newHref(owner, owner_html) : null));
           row.appendChild(newTextColumn((milestone.state == 'closed') ? newIcon('check_circle') : null));
           row.appendChild(newTextColumn(newHref(repo.shortName, repo.html_url)));
+          row.appendChild(newTextColumn(due_date.fromNow()));
           row.appendChild(newTextColumn(newHref(milestone.title, "https://github.com/" + repo.owner.login + "/" + repo.name + "/milestone/" + milestone.number)));
 
           var totalIssues = milestone.closed_issues + milestone.open_issues;
@@ -62,16 +76,9 @@ $(function() {
             progress.className = 'mdl-progress mdl-js-progress';
             componentHandler.upgradeElement(progress);
             progress.MaterialProgress.setProgress(milestone.closed_issues / totalIssues * 100);
+            progress.setAttribute('style', 'width: 100px');
 
             row.appendChild(newColumn(progress));
-          }
-
-          if (milestone.closed_at) {
-            row.setAttribute('data-date', milestone.closed_at);
-          } else if (milestone.due_on) {
-            row.setAttribute('data-date', milestone.due_on);
-          } else {
-            return;
           }
 
           tbody.append(row);
