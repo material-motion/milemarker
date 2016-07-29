@@ -202,14 +202,25 @@ function didCreateFilterableNode(object, node, starNode) {
 }
 
 // Cached github request.
-function requestGitHubAPI(path, data, callback) {
+function requestGitHubAPI(path, data, callback, accumulator) {
   if (typeof callback === 'undefined') {
     callback = data;
     data = undefined;
   }
+  if (data) {
+    data['per_page'] = 100;
+  }
   var cacheKey = path;
   if (data) {
-    cacheKey += "::" + JSON.stringify(data);
+    var cacheKeyData = {};
+    Object.keys(data).forEach(function(key) {
+      if (key == 'per_page' || key == 'page') {
+        return;
+      }
+      cacheKeyData[key] = data[key];
+    });
+
+    cacheKey += "::" + JSON.stringify(cacheKeyData);
   }
   var storage = localStorage.getItem(cacheKey);
   var storageTimestamp = localStorage.getItem(cacheKey + '.timestamp');
@@ -222,9 +233,21 @@ function requestGitHubAPI(path, data, callback) {
     url: 'https://api.github.com' + path,
     data: data,
     complete: function(xhr) {
-      localStorage.setItem(cacheKey, JSON.stringify(xhr.responseJSON));
-      localStorage.setItem(cacheKey + '.timestamp', Date.now());
-      callback.call(null, xhr.responseJSON);
+      if (accumulator && accumulator['items']) {
+        accumulator.items = accumulator.items.concat(xhr.responseJSON.items);
+      } else {
+        accumulator = xhr.responseJSON;
+      }
+
+      var m;
+      if ((m = /<.+?page=(\d+)>; rel="next"/.exec(xhr.getAllResponseHeaders())) !== null) {
+        data['page'] = parseInt(m[1]);
+        requestGitHubAPI(path, data, callback, accumulator);
+      } else {
+        localStorage.setItem(cacheKey, JSON.stringify(accumulator));
+        localStorage.setItem(cacheKey + '.timestamp', Date.now());
+        callback.call(null, accumulator);
+      }
     }
   });
 }
