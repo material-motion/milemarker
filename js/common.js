@@ -278,11 +278,5 @@ $(function() {
       radio.click();
       filterDidChange(radio);
     }
-  
-    document.getElementById('clear').onclick = function(event) {
-      event.stopPropagation();
-      localStorage.clear();
-      return false;
-    }
   });
 });

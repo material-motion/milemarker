@@ -19,4 +19,11 @@ navigation.appendChild(addNavigationRow('Newbie-friendly tasks', 'newbie.html', 
 var spacer = document.createElement('div');
 spacer.className = "mdl-layout-spacer";
 navigation.appendChild(spacer);
-navigation.appendChild(addNavigationRow('Clear local cache', '#', 'delete'));
+var clear = addNavigationRow('Clear local cache', '#', 'delete');
+clear.setAttribute("id", "clear");
+clear.onclick = function(event) {
+  event.stopPropagation();
+  localStorage.clear();
+  return false;
+}
+navigation.appendChild(clear);
