@@ -58,7 +58,9 @@ function newTextColumn(contentNode) {
 function newHref(text, href) {
   var node = document.createElement('a');
   node.href = href;
-  node.appendChild(typeof text == 'string' ? document.createTextNode(text) : text);
+  if (text) {
+    node.appendChild(typeof text == 'string' ? document.createTextNode(text) : text);
+  }
   return node;
 }
 
@@ -132,6 +134,21 @@ function shortNameForRepoName(repoName) {
   return repoName.replace(re, '').replace(/-android$/, '');
 }
 
+function preprocessTravisRepo(repo) {
+  repo['shortName'] = shortNameForRepoName(repo.slug.split('/').pop());
+
+  var filterClass = 'tag-other';
+  if (repo.slug.match(/-android$/)) {
+    filterClass = 'tag-android';
+  } else if (repo.slug.match(/-(objc|swift)$/)) {
+    filterClass = 'tag-appleos';
+  } else if (repo.slug.match(/-(web|js)$/)) {
+    filterClass = 'tag-web';
+  }
+  repo['filterClass'] = filterClass;
+  return repo;
+}
+
 function preprocessRepo(repo) {
   repo['shortName'] = shortNameForRepoName(repo.name);
 
@@ -203,6 +220,15 @@ function didCreateFilterableNode(object, node, starNode) {
 
 // Cached github request.
 function requestGitHubAPI(path, data, callback, accumulator) {
+  requestAPI('https://api.github.com', path, data, callback, accumulator);
+}
+
+function requestTravisAPI(path, data, callback, accumulator) {
+  requestAPI('https://api.travis-ci.org', path, data, callback, accumulator);
+}
+
+// Cached API request
+function requestAPI(apibase, path, data, callback, accumulator) {
   if (typeof callback === 'undefined') {
     callback = data;
     data = undefined;
@@ -210,7 +236,7 @@ function requestGitHubAPI(path, data, callback, accumulator) {
   if (data) {
     data['per_page'] = 100;
   }
-  var cacheKey = path;
+  var cacheKey = apibase + path;
   if (data) {
     var cacheKeyData = {};
     Object.keys(data).forEach(function(key) {
@@ -230,7 +256,7 @@ function requestGitHubAPI(path, data, callback, accumulator) {
   }
   $.ajax({
     type: 'get',
-    url: 'https://api.github.com' + path,
+    url: apibase + path,
     data: data,
     complete: function(xhr) {
       if (accumulator && accumulator['items']) {

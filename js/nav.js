@@ -8,14 +8,15 @@ function addNavigationRow(title, url, icon) {
   if (url == filename) {
     href.className += " active";
   }
-  href.appendChild(document.createTextNode(title));
+  href.appendChild(document.createTextNode(" " + title));
   return href;
 }
 navigation.appendChild(addNavigationRow('Milestones', 'index.html', 'flag'));
 navigation.appendChild(addNavigationRow('Roadmap', 'roadmap.html', 'map'));
 navigation.appendChild(addNavigationRow('Repos', 'repos.html', 'code'));
 navigation.appendChild(addNavigationRow('Assigned', 'assigned.html', 'person'));
-navigation.appendChild(addNavigationRow('Newbie-friendly tasks', 'newbie.html', 'favorite'));
+navigation.appendChild(addNavigationRow('Newbie-friendly', 'newbie.html', 'favorite'));
+navigation.appendChild(addNavigationRow('CI', 'ci.html', 'done_all'));
 var spacer = document.createElement('div');
 spacer.className = "mdl-layout-spacer";
 navigation.appendChild(spacer);
