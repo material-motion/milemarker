@@ -1,9 +1,13 @@
 
 var navigation = document.getElementById('navigation');
+var filename = window.location.pathname.split('/').pop();
 
 function addNavigationRow(title, url, icon) {
   var href = newHref(newIcon(icon), url);
-  href.className = "mdl-navigation__link active mdl-color-text--blue-grey-200";
+  href.className = "mdl-navigation__link mdl-color-text--blue-grey-200";
+  if (url == filename) {
+    href.className += " active";
+  }
   href.appendChild(document.createTextNode(title));
   return href;
 }
