@@ -26,8 +26,10 @@ $(function() {
               table.appendChild(bodyrow);
               columns.forEach(function(column) {
                 theadrow.appendChild(newTextColumn(column.name));
+                var contentColumn = newColumn();
+                bodyrow.appendChild(contentColumn);
                 requestGitHubAPI('/repos/' + owner_name + '/' + repo.name + '/projects/columns/' + column.id + '/cards', function(cards) {
-                  bodyrow.appendChild(newTextColumn(''+cards.length));
+                  contentColumn.innerHTML = ''+cards.length;
                 });
               });
               row.appendChild(newColumn(table));
