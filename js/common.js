@@ -164,6 +164,22 @@ function preprocessRepo(repo) {
   return repo;
 }
 
+function preprocessProject(project, repo) {
+  project['filterClass'] = repo['filterClass'];
+  
+  var re = /repos\/(.+?)\/(.+?)$/; 
+  var m;
+  if ((m = re.exec(project.url)) !== null) {
+    if (m.index === re.lastIndex) {
+      re.lastIndex++;
+    }
+
+    project['html_url'] = "https://github.com/" + m[1] + "/" + m[2];
+  }
+
+  return project;
+}
+
 function preprocessIssue(issue) {
   var re = /repos\/(.+?)\/(.+?)$/; 
   var m;
@@ -258,6 +274,12 @@ function requestAPI(apibase, path, data, callback, accumulator) {
     type: 'get',
     url: apibase + path,
     data: data,
+    beforeSend: function(request) {
+      var authName = localStorage.getItem('oauth-name');
+      var authToken = localStorage.getItem('oauth-token');
+      request.setRequestHeader("Authorization", "Basic " + btoa(authName + ":" + authToken));
+      request.setRequestHeader("Accept", "application/vnd.github.inertia-preview+json");
+    },
     complete: function(xhr) {
       if (accumulator && accumulator['items']) {
         accumulator.items = accumulator.items.concat(xhr.responseJSON.items);

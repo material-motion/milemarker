@@ -1,0 +1,71 @@
+<html>
+<head>
+  <title>sprints :: Milemarker</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.indigo-pink.min.css">
+  <link rel="stylesheet" href="css/milemarker.css">
+  <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/remarkable/1.6.2/remarkable.min.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/sprints.js"></script>
+</head>
+<body>
+<div class="mdl-layout__container">
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header has-drawer">
+    <header class="mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600 is-casting-shadow">
+      <div class="mdl-layout__header-row">
+        <span class="mdl-layout-title">Material Motion Milemarker :: sprints</span>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+          <form name="filter">
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="filter-starred">
+              <input type="radio" id="filter-starred" class="mdl-radio__button" name="filterby" value="starred">
+              <span class="mdl-radio__label">starred</span>
+            </label>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="filter-android">
+              <input type="radio" id="filter-android" class="mdl-radio__button" name="filterby" value="android">
+              <span class="mdl-radio__label">android</span>
+            </label>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="filter-appleos">
+              <input type="radio" id="filter-appleos" class="mdl-radio__button" name="filterby" value="appleos">
+              <span class="mdl-radio__label">appleOS</span>
+            </label>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="filter-web">
+              <input type="radio" id="filter-web" class="mdl-radio__button" name="filterby" value="web">
+              <span class="mdl-radio__label">web</span>
+            </label>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="filter-other">
+              <input type="radio" id="filter-other" class="mdl-radio__button" name="filterby" value="other">
+              <span class="mdl-radio__label">other</span>
+            </label>
+          </form>
+        </nav>
+      </div>
+    </header>
+    
+    <div class="mdl-layout__drawer mdl-color--blue-grey-800">
+      <nav class="mdl-navigation" id="navigation"></nav>
+      <script src="js/nav.js"></script>
+    </div>
+    
+    <main class="mdl-layout__content mdl-color--grey-100">
+      <div id="container" class="mdl-grid">
+        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+          <thead>
+            <tr>
+              <th class="mdl-data-table__cell--non-numeric">Star</th>
+              <th class="mdl-data-table__cell--non-numeric">Name</th>
+              <th class="mdl-data-table__cell--non-numeric">Columns</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>
