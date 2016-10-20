@@ -277,8 +277,10 @@ function requestAPI(apibase, path, data, callback, accumulator) {
     beforeSend: function(request) {
       var authName = localStorage.getItem('oauth-name');
       var authToken = localStorage.getItem('oauth-token');
-      request.setRequestHeader("Authorization", "Basic " + btoa(authName + ":" + authToken));
-      request.setRequestHeader("Accept", "application/vnd.github.inertia-preview+json");
+      if (authName && authToken) {
+        request.setRequestHeader("Authorization", "Basic " + btoa(authName + ":" + authToken));
+        request.setRequestHeader("Accept", "application/vnd.github.inertia-preview+json");
+      }
     },
     complete: function(xhr) {
       if (accumulator && accumulator['items']) {
