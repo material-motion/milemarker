@@ -23,7 +23,6 @@ $(function() {
           cards.detach().appendTo(container);          
         }
         sortCards($('#container .open'));
-        sortCards($('#container .closed'));
       }
     }
 
@@ -40,9 +39,6 @@ $(function() {
           var card = createMilestoneCard.bind(this)(milestone);
           if (milestone.state == 'open') {
             $('#container .open').append(card);
-            
-          } else if (milestone.state == 'closed') {
-            $('#container .closed').append(card);
           }
         }, repo);
         
