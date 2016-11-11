@@ -249,9 +249,10 @@ function requestAPI(apibase, path, data, callback, accumulator) {
     callback = data;
     data = undefined;
   }
-  if (data) {
-    data['per_page'] = 100;
+  if (!data) {
+    data = {};
   }
+  data['per_page'] = 100;
   var cacheKey = apibase + path;
   if (data) {
     var cacheKeyData = {};
@@ -285,6 +286,8 @@ function requestAPI(apibase, path, data, callback, accumulator) {
     complete: function(xhr) {
       if (accumulator && accumulator['items']) {
         accumulator.items = accumulator.items.concat(xhr.responseJSON.items);
+      } else if (accumulator) {
+        accumulator = accumulator.concat(xhr.responseJSON);
       } else {
         accumulator = xhr.responseJSON;
       }

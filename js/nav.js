@@ -17,6 +17,7 @@ navigation.appendChild(addNavigationRow('Repos', 'repos.html', 'code'));
 navigation.appendChild(addNavigationRow('Assigned', 'assigned.html', 'person'));
 navigation.appendChild(addNavigationRow('Newbie-friendly', 'newbie.html', 'favorite'));
 navigation.appendChild(addNavigationRow('CI', 'ci.html', 'done_all'));
+navigation.appendChild(addNavigationRow('Feed', 'feed.html', 'local_post_office'));
 navigation.appendChild(addNavigationRow('Sprints', 'sprints.html', 'dashboard'));
 
 var spacer = document.createElement('div');
