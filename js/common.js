@@ -247,7 +247,7 @@ function requestTravisAPI(path, data, callback, accumulator) {
 function requestAPI(apibase, path, data, callback, accumulator) {
   if (typeof callback === 'undefined') {
     callback = data;
-    data = undefined;
+    data = {};
   }
   if (data) {
     data['per_page'] = 100;
